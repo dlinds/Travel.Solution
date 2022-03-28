@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
+using System;
 
 namespace Travel.Controllers
 {
@@ -77,14 +78,16 @@ namespace Travel.Controllers
 
     //Put api/Review/4
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Review review)
+    public async Task<IActionResult> Put(int id, Review review, string userName)
     {
-      if (id != review.ReviewId)
+      string UserNameInDB = "bob";
+      if (id != review.ReviewId || UserNameInDB != userName)
+      //if (id != review.ReviewId || review.UserName != review.UserName)
       {
         return BadRequest();
       }
       _db.Entry(review).State = EntityState.Modified;
-
+      // thisReview = null;
       try
       {
         await _db.SaveChangesAsync();

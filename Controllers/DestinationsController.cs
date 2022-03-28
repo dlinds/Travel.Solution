@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
+using System;
 
 namespace Travel.Controllers
 {
@@ -19,9 +20,19 @@ namespace Travel.Controllers
 
     //Get api/Destinations
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Destination>>> Get()
+    public async Task<ActionResult<IEnumerable<Destination>>> Get(string sortMethod)
     {
-      return await _db.Destinations.ToListAsync();
+      var query = _db.Destinations.AsQueryable();
+
+      if (sortMethod == "numOfReviews")
+      {
+        query = _db.Destinations.OrderBy(destination => destination.NumOfReviews);
+      }
+      if (sortMethod == "averageRating")
+      {
+        query = _db.Destinations.OrderBy(destination => destination.AverageRating);
+      }
+      return await query.ToListAsync();
     }
 
     //Post api/Destinations
@@ -43,6 +54,25 @@ namespace Travel.Controllers
         return NotFound();
       }
       return destination;
+    }
+
+    //Get api/Destinations/x
+    [HttpGet("isRandom")]
+    public async Task<ActionResult<Destination>> GetRandomDestination()
+    {
+      var query = _db.Destinations.AsQueryable();
+      // if (isRandom == "random")
+      // {
+
+
+      int count = _db.Destinations.Count();
+      Random rand = new Random();
+      int num = rand.Next(0, count);
+
+      query = _db.Destinations.Where(d => d.DestinationId == num);
+
+      return await query.FirstOrDefaultAsync();
+
     }
 
     //Put api/Destination/4
