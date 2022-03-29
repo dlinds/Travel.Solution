@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Travel.Models
 {
+#pragma warning disable CS1591
   public class Review
   {
     public int ReviewId { get; set; }
@@ -13,5 +14,5 @@ namespace Travel.Models
     public virtual Destination destination { get; set; }
 
   }
-
+#pragma warning restore CS1591
 }

@@ -8,6 +8,7 @@ using System;
 
 namespace Travel.Controllers
 {
+#pragma warning disable CS1591
   [Route("api/[controller]")]
   [ApiController]
   public class ReviewsController : ControllerBase
@@ -17,10 +18,38 @@ namespace Travel.Controllers
     {
       _db = db;
     }
-
+#pragma warning restore CS1591
     //Get api/Reviews
+    //Get api/Destinations
+    /// <summary>
+    /// Gets list of reviews based on search criteria
+    /// </summary>
+    /// <remarks>
+    /// Get all reviews:
+    ///
+    ///     GET /Reviews
+    ///     {
+    ///     }
+    ///
+    /// Sort by Country:
+    ///
+    ///     GET /Reviews?country={insert country name}
+    ///     {
+    ///     }
+    ///
+    /// Sort by City:
+    ///
+    ///     GET /Destinations?city={insert city name}
+    ///     {
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="country">Either blank or name of country</param>
+    /// <param name="city">Either blank or name of city</param>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Review>>> Get(int id, string country, string city)
+    public async Task<ActionResult<IEnumerable<Review>>> Get(string country, string city)
     {
       var query = _db.Reviews.AsQueryable();
       // var dQuery = _db.Destinations.AsQueryable();
@@ -56,6 +85,25 @@ namespace Travel.Controllers
     }
 
     //Post api/Reviews
+    /// <summary>
+    /// Creates new review
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Post /Reviews
+    ///     {
+    ///       "DestinationId": integer id of country,
+    ///       "ReviewText": "text of review",
+    ///       "Rating": integer rating,
+    ///       "UserName": "a name"
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="review">A review</param>
+    /// <response code="201">Returns a newly created review</response>
     [HttpPost]
     public async Task<ActionResult<Review>> Post(Review review)
     {
@@ -65,6 +113,20 @@ namespace Travel.Controllers
     }
 
     //Get api/Reviews/3
+    /// <summary>
+    /// Retrieve review based on Id
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Get /Reviews/4
+    ///     {
+    ///     }
+    ///
+    /// </remarks>
+    ///
+    /// <param name="id">Review Id</param>
+    /// <response code="404">No review with that Id exists</response>
     [HttpGet("{id}")]
     public async Task<ActionResult<Review>> GetReview(int id)
     {
@@ -77,6 +139,29 @@ namespace Travel.Controllers
     }
 
     //Put api/Review/4
+    /// <summary>
+    /// Edits a review
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Put /Reviews/id
+    ///     {
+    ///       "reviewId": id,
+    ///       "destinationId": id,
+    ///       "review Text": "Updated Review Text",
+    ///       "rating": Updated Review Rating,
+    ///       "userName": "Updated Destination Name",
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="id">Id of the review being updated</param>
+    /// <param name="review"></param>
+    /// <param name="userName">Username of person who originally submitted review</param>
+    /// <response code="204">Review updated successfully</response>
+    /// <response code="400">Review ID doesn't match ID that is passed.</response>
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Review review, string userName)
     {
@@ -111,6 +196,22 @@ namespace Travel.Controllers
       return NoContent();
 
     }
+    /// <summary>
+    /// Removes a review
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Delete /reviews/id
+    ///     {
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="id"></param>
+    /// <response code="204">Deletes Review</response>
+    /// <response code="404">Review ID doesn't exist.</response>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReview(int id)
     {

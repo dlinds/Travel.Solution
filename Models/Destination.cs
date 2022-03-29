@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace Travel.Models
 {
+#pragma warning disable CS1591
   public class Destination
   {
     public Destination()
@@ -16,4 +17,5 @@ namespace Travel.Models
     public int NumOfReviews { get; set; }
     public virtual ICollection<Review> Reviews { get; set; }
   }
+#pragma warning restore CS1591
 }
