@@ -80,11 +80,15 @@ namespace Travel.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Review review, string userName)
     {
-      string UserNameInDB = "bob";
-      if (id != review.ReviewId || UserNameInDB != userName)
-      //if (id != review.ReviewId || review.UserName != review.UserName)
+      if (id != review.ReviewId || review.UserName != userName)
       {
         return BadRequest();
+      }
+      var thisReview = _db.Reviews.FirstOrDefault(r => r.ReviewId == id);
+      _db.Entry(thisReview).State = EntityState.Detached;
+      if (thisReview.UserName != userName)
+      {
+        return BadRequest("Please use accurate user name!");
       }
       _db.Entry(review).State = EntityState.Modified;
       // thisReview = null;

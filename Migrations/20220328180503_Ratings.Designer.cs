@@ -7,81 +7,83 @@ using Travel.Models;
 
 namespace Travel.Solution.Migrations
 {
-    [DbContext(typeof(TravelContext))]
-    [Migration("20220328180503_Ratings")]
-    partial class Ratings
+#pragma warning disable CS1591
+  [DbContext(typeof(TravelContext))]
+  [Migration("20220328180503_Ratings")]
+  partial class Ratings
+  {
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.0");
+      modelBuilder
+          .HasAnnotation("Relational:MaxIdentifierLength", 64)
+          .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Travel.Models.Destination", b =>
-                {
-                    b.Property<int>("DestinationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+      modelBuilder.Entity("Travel.Models.Destination", b =>
+          {
+            b.Property<int>("DestinationId")
+                      .ValueGeneratedOnAdd()
+                      .HasColumnType("int");
 
-                    b.Property<float>("AverageRating")
-                        .HasColumnType("float");
+            b.Property<float>("AverageRating")
+                      .HasColumnType("float");
 
-                    b.Property<string>("City")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+            b.Property<string>("City")
+                      .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Country")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+            b.Property<string>("Country")
+                      .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+            b.Property<string>("Name")
+                      .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("NumOfReviews")
-                        .HasColumnType("int");
+            b.Property<int>("NumOfReviews")
+                      .HasColumnType("int");
 
-                    b.HasKey("DestinationId");
+            b.HasKey("DestinationId");
 
-                    b.ToTable("Destinations");
-                });
+            b.ToTable("Destinations");
+          });
 
-            modelBuilder.Entity("Travel.Models.Review", b =>
-                {
-                    b.Property<int>("ReviewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+      modelBuilder.Entity("Travel.Models.Review", b =>
+          {
+            b.Property<int>("ReviewId")
+                      .ValueGeneratedOnAdd()
+                      .HasColumnType("int");
 
-                    b.Property<int>("DestinationId")
-                        .HasColumnType("int");
+            b.Property<int>("DestinationId")
+                      .HasColumnType("int");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+            b.Property<int>("Rating")
+                      .HasColumnType("int");
 
-                    b.Property<string>("ReviewText")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+            b.Property<string>("ReviewText")
+                      .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("ReviewId");
+            b.HasKey("ReviewId");
 
-                    b.HasIndex("DestinationId");
+            b.HasIndex("DestinationId");
 
-                    b.ToTable("Reviews");
-                });
+            b.ToTable("Reviews");
+          });
 
-            modelBuilder.Entity("Travel.Models.Review", b =>
-                {
-                    b.HasOne("Travel.Models.Destination", "destination")
-                        .WithMany("Reviews")
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+      modelBuilder.Entity("Travel.Models.Review", b =>
+          {
+            b.HasOne("Travel.Models.Destination", "destination")
+                      .WithMany("Reviews")
+                      .HasForeignKey("DestinationId")
+                      .OnDelete(DeleteBehavior.Cascade)
+                      .IsRequired();
 
-                    b.Navigation("destination");
-                });
+            b.Navigation("destination");
+          });
 
-            modelBuilder.Entity("Travel.Models.Destination", b =>
-                {
-                    b.Navigation("Reviews");
-                });
+      modelBuilder.Entity("Travel.Models.Destination", b =>
+          {
+            b.Navigation("Reviews");
+          });
 #pragma warning restore 612, 618
-        }
     }
+  }
+#pragma warning restore CS1591
 }

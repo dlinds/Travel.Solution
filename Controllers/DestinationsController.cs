@@ -8,6 +8,7 @@ using System;
 
 namespace Travel.Controllers
 {
+#pragma warning disable CS1591
   [Route("api/[controller]")]
   [ApiController]
   public class DestinationsController : ControllerBase
@@ -17,25 +18,70 @@ namespace Travel.Controllers
     {
       _db = db;
     }
-
+#pragma warning restore CS1591
     //Get api/Destinations
+    /// <summary>
+    /// Gets multiple destinations, can be sorted
+    /// </summary>
+    /// <remarks>
+    /// Get all reviews:
+    ///
+    ///     GET /Destinations
+    ///     {
+    ///     }
+    ///
+    /// Sort by Number of Reviews:
+    ///
+    ///     GET /Destinations?sortMethod=numOfReviews
+    ///     {
+    ///     }
+    ///
+    /// Sort by Average Rating:
+    ///
+    ///     GET /Destinations?sortMethod=averageRating
+    ///     {
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="sortMethod">Either blank, numOfReviews, or averageRating</param>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Destination>>> Get(string sortMethod)
     {
       var query = _db.Destinations.AsQueryable();
-
       if (sortMethod == "numOfReviews")
       {
-        query = _db.Destinations.OrderBy(destination => destination.NumOfReviews);
+        query = _db.Destinations.OrderByDescending(destination => destination.NumOfReviews);
       }
       if (sortMethod == "averageRating")
       {
-        query = _db.Destinations.OrderBy(destination => destination.AverageRating);
+        query = _db.Destinations.OrderByDescending(destination => destination.AverageRating);
       }
       return await query.ToListAsync();
     }
 
     //Post api/Destinations
+    /// <summary>
+    /// Creates new destination
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Post /Destinations
+    ///     {
+    ///       "Country": "Sample Country",
+    ///       "City": "Sample City",
+    ///       "Name": "Sample Name",
+    ///       "AverageRating": a decimal number,
+    ///       "NumOfReviews": an integer
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="destination">A destination</param>
+    /// <response code="201">Returns a newly created destination</response>
     [HttpPost]
     public async Task<ActionResult<Destination>> Post(Destination destination)
     {
@@ -44,7 +90,23 @@ namespace Travel.Controllers
       return CreatedAtAction("Post", new { id = destination.DestinationId }, destination);
     }
 
-    //Get api/Destinations/3
+
+
+    //  Get api/Destinations/3
+    /// <summary>
+    /// Retrieve destination based on Id
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Get /Destinations/4
+    ///     {
+    ///     }
+    ///
+    /// </remarks>
+    ///
+    /// <param name="id">Destination Id</param>
+    /// <response code="404">No destination with that Id exists</response>
     [HttpGet("{id}")]
     public async Task<ActionResult<Destination>> GetDestination(int id)
     {
@@ -56,26 +118,30 @@ namespace Travel.Controllers
       return destination;
     }
 
-    //Get api/Destinations/x
-    [HttpGet("isRandom")]
-    public async Task<ActionResult<Destination>> GetRandomDestination()
-    {
-      var query = _db.Destinations.AsQueryable();
-      // if (isRandom == "random")
-      // {
-
-
-      int count = _db.Destinations.Count();
-      Random rand = new Random();
-      int num = rand.Next(0, count);
-
-      query = _db.Destinations.Where(d => d.DestinationId == num);
-
-      return await query.FirstOrDefaultAsync();
-
-    }
-
-    //Put api/Destination/4
+    //Put api/Destinations/4
+    /// <summary>
+    /// Edits a destination
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Put /Destinations/id
+    ///     {
+    ///       "DestinationId": id,
+    ///       "Country": "Updated Country Name",
+    ///       "City": "Updated City Name",
+    ///       "Name": "Updated Destination Name",
+    ///       "AverageRating": updated decimal number,
+    ///       "NumOfReviews": updated integer
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="id"></param>
+    /// <param name="destination"></param>
+    /// <response code="204">Updates Destination</response>
+    /// <response code="400">Destination ID doesn't match ID that is passed.</response>
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Destination destination)
     {
@@ -104,6 +170,23 @@ namespace Travel.Controllers
       return NoContent();
 
     }
+
+    /// <summary>
+    /// Removes a destination
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Delete /Destinations/id
+    ///     {
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <param name="id"></param>
+    /// <response code="204">Deletes Destination</response>
+    /// <response code="404">Destination ID doesn't exist.</response>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDestination(int id)
     {
@@ -117,6 +200,40 @@ namespace Travel.Controllers
       await _db.SaveChangesAsync();
 
       return NoContent();
+    }
+
+    //Get api/Destinations/x
+
+    /// <summary>
+    /// Gets a random destination
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     Get /Destinations/GetRandom
+    ///     {
+    ///     }
+    ///
+    ///
+    /// </remarks>
+    ///
+    /// <response code="204">Random value doesn't exist.</response>
+    [HttpGet("GetRandom")]
+    public async Task<ActionResult<Destination>> GetRandomDestination()
+    {
+      var query = _db.Destinations.AsQueryable();
+      // if (isRandom == "random")
+      // {
+
+
+      int count = _db.Destinations.Count();
+      Random rand = new Random();
+      int num = rand.Next(0, count);
+
+      query = _db.Destinations.Where(d => d.DestinationId == num);
+
+      return await query.FirstOrDefaultAsync();
+
     }
 
     private bool DestinationExists(int id)
