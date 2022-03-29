@@ -11,7 +11,6 @@ namespace Travel.Models
     public int Rating { get; set; }
     [Required]
     public string UserName { get; set; }
-    public virtual Destination destination { get; set; }
 
   }
 #pragma warning restore CS1591
