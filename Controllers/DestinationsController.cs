@@ -75,6 +75,7 @@ namespace Travel.Controllers
     ///       "Name": "Sample Name",
     ///       "AverageRating": a decimal number,
     ///       "NumOfReviews": an integer
+    ///       "ImgLink": "A URL string of destination"
     ///     }
     ///
     ///
@@ -222,15 +223,31 @@ namespace Travel.Controllers
     public async Task<ActionResult<Destination>> GetRandomDestination()
     {
       var query = _db.Destinations.AsQueryable();
-      // if (isRandom == "random")
-      // {
 
-
-      int count = _db.Destinations.Count();
+      Destination newestDestination = _db.Destinations
+                      .OrderByDescending(p => p.DestinationId)
+                      .FirstOrDefault();
+      int count = newestDestination.DestinationId + 1;
       Random rand = new Random();
       int num = rand.Next(0, count);
 
-      query = _db.Destinations.Where(d => d.DestinationId == num);
+
+      bool isFound = false;
+
+      while (isFound != true)
+      {
+        isFound = _db.Destinations.Any(d => d.DestinationId == num);
+
+        if (isFound == true)
+        {
+          query = _db.Destinations.Where(d => d.DestinationId == num);
+          break;
+        }
+        else
+        {
+          num = rand.Next(0, count);
+        }
+      }
 
       return await query.FirstOrDefaultAsync();
 

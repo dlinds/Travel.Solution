@@ -31,6 +31,9 @@ namespace Travel.Solution.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("ImgLink")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -70,13 +73,11 @@ namespace Travel.Solution.Migrations
 
             modelBuilder.Entity("Travel.Models.Review", b =>
                 {
-                    b.HasOne("Travel.Models.Destination", "destination")
+                    b.HasOne("Travel.Models.Destination", null)
                         .WithMany("Reviews")
                         .HasForeignKey("DestinationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("destination");
                 });
 
             modelBuilder.Entity("Travel.Models.Destination", b =>

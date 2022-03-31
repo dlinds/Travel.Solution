@@ -44,16 +44,29 @@ namespace Travel.Controllers
     ///     }
     ///
     ///
+    ///     GET /Destinations?name={insert destination name}
+    ///     {
+    ///     }
+    ///
+    ///
     /// </remarks>
     ///
     /// <param name="country">Either blank or name of country</param>
     /// <param name="city">Either blank or name of city</param>
+    /// <param name="name">Name of a destination</param>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Review>>> Get(string country, string city)
+    public async Task<ActionResult<IEnumerable<Review>>> Get(string country, string city, string name)
     {
       var query = _db.Reviews.AsQueryable();
       // var dQuery = _db.Destinations.AsQueryable();
-
+      if (name != null)
+      {
+        var nameJoinQuery = from destination in _db.Destinations
+                            where destination.Name == name
+                            join review in _db.Reviews on destination.DestinationId equals review.DestinationId
+                            select review;
+        return await nameJoinQuery.ToListAsync();
+      }
       // var innerJoinQuery = _db.Reviews.AsQueryable();
       if (country != null && city != null)
       {

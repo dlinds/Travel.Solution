@@ -15,6 +15,7 @@ namespace Travel.Models
     public string Name { get; set; }
     public float AverageRating { get; set; }
     public int NumOfReviews { get; set; }
+    public string ImgLink { get; set; }
     public virtual ICollection<Review> Reviews { get; set; }
 
     public void CalculateAverage(int newRating)
