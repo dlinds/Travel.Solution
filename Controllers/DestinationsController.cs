@@ -54,9 +54,13 @@ namespace Travel.Controllers
       {
         query = _db.Destinations.OrderByDescending(destination => destination.NumOfReviews);
       }
-      if (sortMethod == "averageRating")
+      else if (sortMethod == "averageRating")
       {
         query = _db.Destinations.OrderByDescending(destination => destination.AverageRating);
+      }
+      else
+      {
+        query = _db.Destinations.OrderBy(destination => destination.Country);
       }
       return await query.ToListAsync();
     }
