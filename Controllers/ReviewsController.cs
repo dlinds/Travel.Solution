@@ -196,6 +196,9 @@ namespace Travel.Controllers
       // thisReview = null;
       try
       {
+        Destination destination = _db.Destinations.FirstOrDefault(a => a.DestinationId == review.DestinationId);
+        destination.ReCalculateAverage(review.Rating);
+        _db.Entry(destination).State = EntityState.Modified;
         await _db.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
@@ -239,6 +242,9 @@ namespace Travel.Controllers
       }
 
       _db.Reviews.Remove(review);
+      Destination destination = _db.Destinations.FirstOrDefault(a => a.DestinationId == review.DestinationId);
+      destination.DeCalculateAverage(review.Rating);
+      _db.Entry(destination).State = EntityState.Modified;
       await _db.SaveChangesAsync();
 
       return NoContent();

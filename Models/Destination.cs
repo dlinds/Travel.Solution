@@ -41,6 +41,42 @@ namespace Travel.Models
 
       */
     }
+
+    public void ReCalculateAverage(int newRating)
+    {
+
+      float CurrentMultipledTotal = this.NumOfReviews * this.AverageRating; //200
+      float NewTotal = CurrentMultipledTotal - this.AverageRating;
+      float NewNewTotal = NewTotal + newRating;
+      float FinishedAverageRating = NewNewTotal / this.NumOfReviews;
+      this.AverageRating = FinishedAverageRating;
+
+      /*
+      newRating = 10
+      oldRating = 8
+      AverageRatingCurrent = 5
+      numOfReviews = 40
+
+      numOfReviews * AverageCurrentRating = CurrentMultipledTotal (40 * 5 = 200)  *****
+      NewTotal = CurrentMultipledTotal - oldRating (200 - 8 = 192)                *****
+      newnewTotal = NewTotal + NewRating (192 + 10 = 202)
+      FinishedAverageRating = newnewTotal / numOfReview (202 / 40 = 5.05)
+
+      */
+    }
+    public void DeCalculateAverage(int oldRating)
+    {
+      float currentTotalScore = this.AverageRating * this.NumOfReviews;
+      float newTotalScore = currentTotalScore - oldRating;
+      int newNumOfReviews = this.NumOfReviews - 1;
+      float result = newTotalScore / newNumOfReviews;
+
+      this.AverageRating = result;
+      this.NumOfReviews = newNumOfReviews;
+      //averageRating * numOfReviews = currentTotalScore
+      //currentTotalScore - oldRating = newTotalScore
+      //newTotalScore / newNumOfReviews = result   newNumOfReviews = NumOfReviews-1
+    }
   }
 #pragma warning restore CS1591
 }
