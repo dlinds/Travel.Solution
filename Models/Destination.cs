@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using System;
 namespace Travel.Models
 {
 #pragma warning disable CS1591
@@ -23,20 +23,20 @@ namespace Travel.Models
       float priorTotalSum = (float)this.NumOfReviews * this.AverageRating;
       float newTotalSum = priorTotalSum + newRating;
       int newNumOfReviews = this.NumOfReviews + 1;
-      float output = newTotalSum / (newNumOfReviews);
+      string output = (newTotalSum / (newNumOfReviews)).ToString("0.00");
 
 
       this.NumOfReviews = newNumOfReviews;
-      this.AverageRating = output;
+      this.AverageRating = float.Parse(output);
 
       /*
-      newRating = 5
-      AverageRating = 3.7
-      numOfReviews = 40
+      newRating = 10
+      AverageRating = 7.5
+      numOfReviews = 2
 
-      numOfReviews * AverageRating = priorTotalSum;
-      priorTotalSum + newRating = newTotalSum
-      newTotalSum/newNumOfReviews = output
+      numOfReviews * AverageRating = priorTotalSum; 7.5*2 = 15
+      priorTotalSum + newRating = newTotalSum 15+10 = 25
+      newTotalSum/newNumOfReviews = output 25 / 3 = 8.33
 
 
       */
@@ -49,7 +49,7 @@ namespace Travel.Models
       float NewTotal = CurrentMultipledTotal - this.AverageRating;
       float NewNewTotal = NewTotal + newRating;
       float FinishedAverageRating = NewNewTotal / this.NumOfReviews;
-      this.AverageRating = FinishedAverageRating;
+      this.AverageRating = float.Parse(FinishedAverageRating.ToString("0.00"));
 
       /*
       newRating = 10
@@ -71,7 +71,7 @@ namespace Travel.Models
       int newNumOfReviews = this.NumOfReviews - 1;
       float result = newTotalScore / newNumOfReviews;
 
-      this.AverageRating = result;
+      this.AverageRating = float.Parse(result.ToString("0.00"));
       this.NumOfReviews = newNumOfReviews;
       //averageRating * numOfReviews = currentTotalScore
       //currentTotalScore - oldRating = newTotalScore

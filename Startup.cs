@@ -25,7 +25,6 @@ namespace Travel
     {
       Configuration = configuration;
     }
-
     public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,6 +33,16 @@ namespace Travel
 
       services.AddDbContext<TravelContext>(opt =>
           opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
+      services.AddCors(options =>
+        {
+          options.AddPolicy("Policy1",
+                            policy =>
+                            {
+                              policy.WithOrigins("https://localhost:5001",
+                                                    "http://localhost:3001").WithMethods("PUT", "DELETE", "GET");
+                            });
+        });
+
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
@@ -57,7 +66,7 @@ namespace Travel
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      if (env.IsDevelopment())
+      if (env.IsDevelopment() || env.IsProduction())
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
@@ -67,7 +76,7 @@ namespace Travel
       // app.UseHttpsRedirection();
 
       app.UseRouting();
-
+      app.UseCors();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>

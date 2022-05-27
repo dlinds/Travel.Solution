@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
 using System;
+using Microsoft.AspNetCore.Cors;
+
 
 namespace Travel.Controllers
 {
@@ -46,6 +48,7 @@ namespace Travel.Controllers
     /// </remarks>
     ///
     /// <param name="sortMethod">Either blank, numOfReviews, or averageRating</param>
+    [DisableCors]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Destination>>> Get(string sortMethod)
     {
@@ -112,6 +115,7 @@ namespace Travel.Controllers
     ///
     /// <param name="id">Destination Id</param>
     /// <response code="404">No destination with that Id exists</response>
+    [EnableCors("AnotherPolicy")]
     [HttpGet("{id}")]
     public async Task<ActionResult<Destination>> GetDestination(int id)
     {
