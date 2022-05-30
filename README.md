@@ -23,7 +23,7 @@ This is a C# API application for a website for viewing travel destinations and d
 
 <br>
 
-You can view the Swagger documentation and endpoints for this API here: [http://travelapi.dlinds.com:6003/swagger/index.html]http://travelapi.dlinds.com:6003/swagger/index.html). If you would like to view the front end application that calls the API animals endpoint, please navigate to [http://travelclient.dlinds.com:6003](http://travelclient.dlinds.com:6003).
+You can view the Swagger documentation and endpoints for this API here: [http://travelapi.dlinds.com:6001/swagger/index.html]http://travelapi.dlinds.com:6001/swagger/index.html). If you would like to view the front end application that calls the API animals endpoint, please navigate to [http://travelclient.dlinds.com:6001](http://travelclient.dlinds.com:6001).
 
 # Setup/Installation Requirements
 
